@@ -8,6 +8,7 @@ namespace SchoolApi.Models
         public int SubjectId { get; set; }
         public string? SubjectName { get; set; }
         public int HoursToComplete { get; set; }
+        public List<Student>? StudentsEnrolled { get; set; } = new List<Student>();
                
     }
 }

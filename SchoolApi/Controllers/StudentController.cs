@@ -44,7 +44,7 @@ namespace SchoolApi.Controllers
         public async Task<IActionResult>UpdateStudent(int id, Student student)
         {
             var studentToUpdate = await _schoolServices.UpdateStudent(id, student);
-            if(studentToUpdate == null)
+            if(studentToUpdate is null)
             {
                 return NotFound();
             }
@@ -54,7 +54,7 @@ namespace SchoolApi.Controllers
         public async Task<IActionResult>DeleteStudent(int id)
         {
             var studentToDelete = await _schoolServices.DeleteStudent(id);
-            if(studentToDelete == null)
+            if(studentToDelete is null)
             {
                 return NotFound();
             }
