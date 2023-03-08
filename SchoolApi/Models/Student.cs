@@ -9,7 +9,6 @@ namespace SchoolApi.Models
         public string? LastName { get; set; }
         public int Age { get; set; }
         public Professor? Professor { get; set; } 
-        public List<Subjects>? Subjects { get; set; } = new List<Subjects> ();  
-        
+        public List<Subjects>? Subjects { get; set; } = new List<Subjects>();        
     }
 }

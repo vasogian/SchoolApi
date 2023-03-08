@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Models;
 using SchoolApi.Services;
+using SchoolApi.ViewModels;
 
 namespace SchoolApi.Controllers
 {
@@ -10,9 +12,11 @@ namespace SchoolApi.Controllers
     public class SubjectController : ControllerBase
     {
         private readonly SchoolServices _schoolServices;
-        public SubjectController(SchoolServices schoolServices)
+        private readonly IMapper _mapper;
+        public SubjectController(SchoolServices schoolServices, IMapper mapper)
         {
             _schoolServices = schoolServices;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,24 +28,34 @@ namespace SchoolApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(selectedSubject);
+            SubjectViewModel subject = new SubjectViewModel()
+            {
+                SubjectName = selectedSubject.SubjectName
+            };
+            return Ok(subject);
         }
 
         [HttpPost]
 
-        public async Task<IActionResult> AddSubject(Subjects subject)
+        public async Task<IActionResult> AddSubject(CreateOrUpdateSubjectViewModel subject)
         {
-           await this._schoolServices.CreateSubject(subject);
-           return CreatedAtAction(nameof(GetSubjectByid), new { subject.SubjectId }, subject);
+           var subjToBeAdded = _mapper.Map<Subjects>(subject);
+            if(subjToBeAdded is null)
+            {
+                return NotFound();
+            }
+            await this._schoolServices.CreateSubject(subjToBeAdded);
+           return CreatedAtAction(nameof(GetSubjectByid), new { Name = subject.SubjectName }, subject);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateSubject(int id, Subjects subject)
+        public async Task<IActionResult> UpdateSubject(int id, CreateOrUpdateSubjectViewModel subject)
         {
-            var subjectToUpdate = await _schoolServices.UpdateSubject(id, subject);
+            var subjectToUpdate = _mapper.Map<Subjects>(subject);
             if(subjectToUpdate is null)
             {
                 return NotFound();
             }
+            await this._schoolServices.UpdateSubject(id, subjectToUpdate);
             return Ok(subjectToUpdate);
         }
         [HttpDelete]

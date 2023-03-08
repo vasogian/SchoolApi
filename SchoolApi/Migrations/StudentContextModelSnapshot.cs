@@ -38,7 +38,7 @@ namespace SchoolApi.Migrations
 
                     b.HasKey("ProfId");
 
-                    b.ToTable("Professors");
+                    b.ToTable("Professors", (string)null);
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Student", b =>
@@ -65,7 +65,7 @@ namespace SchoolApi.Migrations
 
                     b.HasIndex("ProfessorProfId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Subjects", b =>
@@ -87,9 +87,22 @@ namespace SchoolApi.Migrations
 
                     b.HasKey("SubjectId");
 
-                    b.HasIndex("StudentId");
+                    b.ToTable("Subjects", (string)null);
+                });
 
-                    b.ToTable("Subjects");
+            modelBuilder.Entity("StudentSubjects", b =>
+                {
+                    b.Property<int>("StudentsEnrolledId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubjectsSubjectId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentsEnrolledId", "SubjectsSubjectId");
+
+                    b.HasIndex("SubjectsSubjectId");
+
+                    b.ToTable("StudentSubjects", (string)null);
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Student", b =>

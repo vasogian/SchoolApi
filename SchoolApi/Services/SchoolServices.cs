@@ -15,6 +15,7 @@ namespace SchoolApi.Services
             var allStudents = await _studentContext.Students
                 .Include(x => x.Subjects)
                 .Include(x => x.Professor)
+                .Include(x => x.Subjects)
                 .ToListAsync();
             if (allStudents.Any())
             {
@@ -34,10 +35,28 @@ namespace SchoolApi.Services
             }
             return selectedStudent;
         }
-        public async Task AddStudent(Student student)
+        public async Task<Student> GetStudentByName(string name)
         {
-            _studentContext.Students.Add(student);
-            await _studentContext.SaveChangesAsync();
+            var studentByName = await _studentContext.Students
+                .Include(x => x.Subjects)
+                .Include(x => x.Professor)
+                .FirstOrDefaultAsync(x => x.Name == name);
+            if (studentByName is null)
+            {
+                return new Student();
+            }
+            return studentByName;
+        }
+
+
+        public async Task<Student>AddStudent(Student student)
+        {
+            if (student != null)
+            {
+                _studentContext.Students.Add(student);
+                await _studentContext.SaveChangesAsync();
+            }
+            return new Student();
 
         }
         public async Task<Student> UpdateStudent(int id, Student student)
@@ -115,6 +134,7 @@ namespace SchoolApi.Services
             }
             return selectedSubject;
         }
+
 
         public async Task CreateSubject(Subjects subject)
         {

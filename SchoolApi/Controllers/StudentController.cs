@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Models;
 using SchoolApi.Services;
@@ -7,12 +9,15 @@ namespace SchoolApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class StudentController : ControllerBase
     {
         private readonly SchoolServices _schoolServices;
-        public StudentController(SchoolServices schoolServices)
+        private readonly IMapper _mapper;
+        public StudentController(SchoolServices schoolServices, IMapper mapper)
         {
-            _schoolServices = schoolServices;   
+            _schoolServices = schoolServices;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllStudents()
@@ -22,32 +27,37 @@ namespace SchoolApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(getStudents);
+            return Ok(_mapper.Map<IEnumerable<StudentViewModel>>(getStudents));
+
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult>GetStudentById(int id)
+        public async Task<IActionResult> GetStudentById(int id)
         {
-            var student = await _schoolServices.GetStudentById(id);
-            if(student == null)
+            var searchedStudent = await _schoolServices.GetStudentById(id);
+            StudentViewModel studentViewModel = new StudentViewModel()
             {
                 return NotFound();
             }
             return Ok(student);
         }
         [HttpPost]
-        public async Task<IActionResult>AddStudent(Student student)
+        public async Task<ActionResult<Student>> AddStudent(CreateOrUpdateStudentViewModel student)
         {
-            await this._schoolServices.AddStudent(student);
-            return CreatedAtAction(nameof(GetStudentById), new { id = student.Id }, student);
+            var studentToBeCreated = _mapper.Map<Student>(student); 
+            if(studentToBeCreated != null)           
+            await this._schoolServices.AddStudent(studentToBeCreated);
+            return CreatedAtAction(nameof(GetStudentById), new { Name = student.Name }, student);
         }
         [HttpPut]
-        public async Task<IActionResult>UpdateStudent(int id, Student student)
+        public async Task<IActionResult> UpdateStudent(int id,CreateOrUpdateStudentViewModel student)
         {
-            var studentToUpdate = await _schoolServices.UpdateStudent(id, student);
-            if(studentToUpdate is null)
+            var  studentToUpdate = _mapper.Map<Student>(student);
+            if (studentToUpdate is null)
             {
                 return NotFound();
             }
+            
+            await this._schoolServices.UpdateStudent(id, studentToUpdate);
             return Ok(studentToUpdate);
         }
         [HttpDelete("{id}")]

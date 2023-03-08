@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Models;
 using SchoolApi.Services;
+using SchoolApi.ViewModels;
 
 namespace SchoolApi.Controllers
 {
@@ -10,9 +12,11 @@ namespace SchoolApi.Controllers
     public class ProfessorController : ControllerBase
     {
         private readonly SchoolServices _schoolServices;
-        public ProfessorController(SchoolServices schoolServices)
+        private readonly IMapper _mapper;
+        public ProfessorController(SchoolServices schoolServices, IMapper mapper)
         {
             _schoolServices = schoolServices;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,23 +28,35 @@ namespace SchoolApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(selectedProfessor);
+            var searchedProfessor = new ProfessorViewModel()
+            {
+                ProfName = selectedProfessor.ProfName,
+                ProfLastName = selectedProfessor.ProfLastName
+            };
+            return Ok(searchedProfessor);
         }
         [HttpPost]
-        public async Task<IActionResult> AddProfessor(Professor professor)
+        public async Task<IActionResult> AddProfessor(CreateOrUpdateProfessorViewModel professor)
         {
-            await this._schoolServices.CreateProfessor(professor);
-            return CreatedAtAction(nameof(GetProfessorById), new { id = professor.ProfId }, professor);
-        }
-        [HttpPut]
-
-        public async Task<IActionResult> UpdateProfessor(int id, Professor professor)
-        {
-            var professorToBeUpdated = await _schoolServices.UpdateProfessor(id, professor);
-            if(professorToBeUpdated is null)
+            var profToBeAdded = _mapper.Map<Professor>(professor);
+            if(professor is null)
             {
                 return NotFound();
             }
+            await this._schoolServices.CreateProfessor(profToBeAdded);
+            return CreatedAtAction(nameof(GetProfessorById), new { Name = professor.ProfName }, professor);
+        }
+        [HttpPut]
+
+        public async Task<IActionResult> UpdateProfessor(int id, CreateOrUpdateProfessorViewModel professor)
+        {
+            var professorToBeUpdated =  _mapper.Map<Professor>(professor);
+            if (professorToBeUpdated is null)
+            {
+                return NotFound();
+            }
+            await this._schoolServices.UpdateProfessor(id, professorToBeUpdated);
+           
             return Ok(professorToBeUpdated);
         }
         [HttpDelete]
