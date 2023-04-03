@@ -8,5 +8,6 @@ namespace SchoolApi.Models
         public int ProfId { get; set; } 
         public string? ProfName { get; set; }
         public string? ProfLastName { get; set; }
+        public List<Student>? Students { get; set; } 
     }
 }
