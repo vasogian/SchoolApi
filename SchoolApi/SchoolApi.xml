@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SchoolApi</name>
+    </assembly>
+    <members>
+        <member name="M:SchoolApi.Controllers.ProfessorController.GetProfessorById(System.Int32)">
+            <summary>
+            Gets a professor by id.
+            </summary>
+            <param name="id">Professor's id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.ProfessorController.AddProfessor(SchoolApi.ViewModels.CreateOrUpdateProfessorViewModel)">
+            <summary>
+            Add a new professor.
+            </summary>
+            <param name="professor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.ProfessorController.UpdateProfessor(System.Int32,SchoolApi.ViewModels.CreateOrUpdateProfessorViewModel)">
+            <summary>
+            Update a professor's profile information.
+            </summary>
+            <param name="id">Professor's id.</param>
+            <param name="professor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.ProfessorController.DeleteProfessor(System.Int32)">
+            <summary>
+            Delete a professor.
+            </summary>
+            <param name="id">Professor's id</param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.GetAllStudents">
+            <summary>
+            Gets all registered students.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.GetStudentById(System.Int32)">
+            <summary>
+            Gets a student by id.
+            </summary>
+            <param name="id">Student's id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.AddStudent(SchoolApi.ViewModels.CreateOrUpdateStudentViewModel)">
+            <summary>
+            Adds a student in the database.
+            </summary>
+            <param name="student"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.UpdateStudent(System.Int32,SchoolApi.ViewModels.CreateOrUpdateStudentViewModel)">
+            <summary>
+            Updates a student's profile information.
+            </summary>
+            <param name="id">Student's id.</param>
+            <param name="student"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.DeleteStudent(System.Int32)">
+            <summary>
+            Deletes a student.
+            </summary>
+            <param name="id">Student's id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.SubjectController.GetSubjectByid(System.Int32)">
+            <summary>
+            Gets a subject by id.
+            </summary>
+            <param name="id">Subject's id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.SubjectController.AddSubject(SchoolApi.ViewModels.CreateOrUpdateSubjectViewModel)">
+            <summary>
+            Adds a new subject.
+            </summary>
+            <param name="subject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.SubjectController.UpdateSubject(System.Int32,SchoolApi.ViewModels.CreateOrUpdateSubjectViewModel)">
+            <summary>
+            Updates a subject's info.
+            </summary>
+            <param name="id">Subject's id.</param>
+            <param name="subject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.SubjectController.DeleteSubject(System.Int32)">
+            <summary>
+            Deletes a subject.
+            </summary>
+            <param name="id">Subject's id.</param>
+            <returns></returns>
+        </member>
+        <member name="T:SchoolApi.Migrations.initialstate">
+            <inheritdoc />
+        </member>
+        <member name="M:SchoolApi.Migrations.initialstate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:SchoolApi.Migrations.initialstate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:SchoolApi.Migrations.initialstate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

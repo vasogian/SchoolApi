@@ -7,6 +7,7 @@ namespace SchoolApi.Profiles
         public ProfessorProfile()
         {
             CreateMap<ViewModels.CreateOrUpdateProfessorViewModel, Models.Professor>();
+            CreateMap<Models.Professor, ViewModels.CreateOrUpdateProfessorViewModel>();
         }
         
     }

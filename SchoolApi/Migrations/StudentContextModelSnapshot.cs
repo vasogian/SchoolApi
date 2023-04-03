@@ -20,7 +20,7 @@ namespace SchoolApi.Migrations
                 .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("SchoolApi.Models.Professor", b =>
                 {
@@ -28,7 +28,7 @@ namespace SchoolApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProfId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProfId"), 1L, 1);
 
                     b.Property<string>("ProfLastName")
                         .HasColumnType("nvarchar(max)");
@@ -47,7 +47,7 @@ namespace SchoolApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -74,7 +74,7 @@ namespace SchoolApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"), 1L, 1);
 
                     b.Property<int>("HoursToComplete")
                         .HasColumnType("int");
@@ -87,22 +87,9 @@ namespace SchoolApi.Migrations
 
                     b.HasKey("SubjectId");
 
+                    b.HasIndex("StudentId");
+
                     b.ToTable("Subjects", (string)null);
-                });
-
-            modelBuilder.Entity("StudentSubjects", b =>
-                {
-                    b.Property<int>("StudentsEnrolledId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubjectsSubjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentsEnrolledId", "SubjectsSubjectId");
-
-                    b.HasIndex("SubjectsSubjectId");
-
-                    b.ToTable("StudentSubjects", (string)null);
                 });
 
             modelBuilder.Entity("SchoolApi.Models.Student", b =>

@@ -18,9 +18,12 @@ namespace SchoolApi.Controllers
             _schoolServices = schoolServices;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Get a subject by id.
+        /// </summary>
+        /// <param name="id">Subject's id.</param>
+        /// <returns></returns>
         [HttpGet]
-
         public async Task<IActionResult> GetSubjectByid(int id)
         {
             var selectedSubject = await _schoolServices.GetSubjectById(id);
@@ -30,11 +33,16 @@ namespace SchoolApi.Controllers
             }
             SubjectViewModel subject = new SubjectViewModel()
             {
-                SubjectName = selectedSubject.SubjectName
+                SubjectName = selectedSubject.SubjectName,
+                HoursToComplete = selectedSubject.HoursToComplete
             };
             return Ok(subject);
         }
-
+        /// <summary>
+        /// Add a new subject.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns></returns>
         [HttpPost]
 
         public async Task<IActionResult> AddSubject(CreateOrUpdateSubjectViewModel subject)
@@ -47,6 +55,12 @@ namespace SchoolApi.Controllers
             await this._schoolServices.CreateSubject(subjToBeAdded);
            return CreatedAtAction(nameof(GetSubjectByid), new { Name = subject.SubjectName }, subject);
         }
+        /// <summary>
+        /// Update a subject's info.
+        /// </summary>
+        /// <param name="id">Subject's id.</param>
+        /// <param name="subject"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateSubject(int id, CreateOrUpdateSubjectViewModel subject)
         {
@@ -58,8 +72,12 @@ namespace SchoolApi.Controllers
             await this._schoolServices.UpdateSubject(id, subjectToUpdate);
             return Ok(subjectToUpdate);
         }
+        /// <summary>
+        /// Delete a subject.
+        /// </summary>
+        /// <param name="id">Subject's id.</param>
+        /// <returns></returns>
         [HttpDelete]
-
         public async Task<IActionResult> DeleteSubject(int id )
         {
             var subjectToDelete = await _schoolServices.DeleteSubject(id);
