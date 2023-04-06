@@ -9,14 +9,12 @@
             Get a professor by id.
             </summary>
             <param name="id">Professor's id.</param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.ProfessorController.AddProfessor(SchoolApi.ViewModels.CreateOrUpdateProfessorViewModel)">
             <summary>
             Add a new professor.
             </summary>
             <param name="professor"></param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.ProfessorController.UpdateProfessor(System.Int32,SchoolApi.ViewModels.CreateOrUpdateProfessorViewModel)">
             <summary>
@@ -24,6 +22,13 @@
             </summary>
             <param name="id">Professor's id.</param>
             <param name="professor"></param>
+        </member>
+        <member name="M:SchoolApi.Controllers.ProfessorController.PartiallyUpdateProfessor(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{SchoolApi.ViewModels.CreateOrUpdateProfessorViewModel})">
+            <summary>
+            Update a field.
+            </summary>
+            <param name="id">Professor's id.</param>
+            <param name="patchDoc"></param>
             <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.ProfessorController.DeleteProfessor(System.Int32)">
@@ -31,7 +36,6 @@
             Delete a professor.
             </summary>
             <param name="id">Professor's id</param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.StudentController.GetAllStudents">
             <summary>
@@ -49,7 +53,6 @@
             Add a student in the database.
             </summary>
             <param name="student"></param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.StudentController.UpdateStudent(System.Int32,SchoolApi.ViewModels.CreateOrUpdateStudentViewModel)">
             <summary>
@@ -57,6 +60,13 @@
             </summary>
             <param name="id">Student's id.</param>
             <param name="student"></param>
+        </member>
+        <member name="M:SchoolApi.Controllers.StudentController.PartiallyUpdateStudent(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{SchoolApi.ViewModels.CreateOrUpdateStudentViewModel})">
+            <summary>
+            Update a  field 
+            </summary>
+            <param name="id">Student's id.</param>
+            <param name="patch"></param>      
         </member>
         <member name="M:SchoolApi.Controllers.StudentController.DeleteStudent(System.Int32)">
             <summary>
@@ -69,14 +79,12 @@
             Get a subject by id.
             </summary>
             <param name="id">Subject's id.</param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.SubjectController.AddSubject(SchoolApi.ViewModels.CreateOrUpdateSubjectViewModel)">
             <summary>
             Add a new subject.
             </summary>
             <param name="subject"></param>
-            <returns></returns>
         </member>
         <member name="M:SchoolApi.Controllers.SubjectController.UpdateSubject(System.Int32,SchoolApi.ViewModels.CreateOrUpdateSubjectViewModel)">
             <summary>
@@ -84,14 +92,19 @@
             </summary>
             <param name="id">Subject's id.</param>
             <param name="subject"></param>
-            <returns></returns>
+        </member>
+        <member name="M:SchoolApi.Controllers.SubjectController.PartiallyUpdateSubject(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{SchoolApi.ViewModels.CreateOrUpdateSubjectViewModel})">
+            <summary>
+            Update a field.
+            </summary>
+            <param name="id">Subject's id.</param>
+            <param name="patch"></param>
         </member>
         <member name="M:SchoolApi.Controllers.SubjectController.DeleteSubject(System.Int32)">
             <summary>
             Delete a subject.
             </summary>
             <param name="id">Subject's id.</param>
-            <returns></returns>
         </member>
         <member name="T:SchoolApi.Migrations.initialstate">
             <inheritdoc />
