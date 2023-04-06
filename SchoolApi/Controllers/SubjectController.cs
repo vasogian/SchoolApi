@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Models;
 using SchoolApi.Services;
@@ -22,12 +23,11 @@ namespace SchoolApi.Controllers
         /// Get a subject by id.
         /// </summary>
         /// <param name="id">Subject's id.</param>
-        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetSubjectByid(int id)
         {
             var selectedSubject = await _schoolServices.GetSubjectById(id);
-            if(selectedSubject is null)
+            if (selectedSubject is null)
             {
                 return NotFound();
             }
@@ -42,30 +42,28 @@ namespace SchoolApi.Controllers
         /// Add a new subject.
         /// </summary>
         /// <param name="subject"></param>
-        /// <returns></returns>
         [HttpPost]
 
         public async Task<IActionResult> AddSubject(CreateOrUpdateSubjectViewModel subject)
         {
-           var subjToBeAdded = _mapper.Map<Subjects>(subject);
-            if(subjToBeAdded is null)
+            var subjToBeAdded = _mapper.Map<Subjects>(subject);
+            if (subjToBeAdded is null)
             {
                 return NotFound();
             }
             await this._schoolServices.CreateSubject(subjToBeAdded);
-           return CreatedAtAction(nameof(GetSubjectByid), new { Name = subject.SubjectName }, subject);
+            return CreatedAtAction(nameof(GetSubjectByid), new { Name = subject.SubjectName }, subject);
         }
         /// <summary>
         /// Update a subject's info.
         /// </summary>
         /// <param name="id">Subject's id.</param>
         /// <param name="subject"></param>
-        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateSubject(int id, CreateOrUpdateSubjectViewModel subject)
         {
             var subjectToUpdate = _mapper.Map<Subjects>(subject);
-            if(subjectToUpdate is null)
+            if (subjectToUpdate is null)
             {
                 return NotFound();
             }
@@ -73,19 +71,45 @@ namespace SchoolApi.Controllers
             return Ok(subjectToUpdate);
         }
         /// <summary>
+        /// Update a field.
+        /// </summary>
+        /// <param name="id">Subject's id.</param>
+        /// <param name="patch"></param>
+        [HttpPatch]
+        public async Task<IActionResult> PartiallyUpdateSubject(int id,
+            JsonPatchDocument<CreateOrUpdateSubjectViewModel> patch)
+        {
+            if (patch != null)
+            {
+                var subjectToUpdate = await _schoolServices.GetSubjectById(id);
+                var mappedSubject = _mapper.Map<CreateOrUpdateSubjectViewModel>(subjectToUpdate);
+
+                patch.ApplyTo(mappedSubject, ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var subjectToBeUpdated = _mapper.Map<Subjects>(mappedSubject);
+                var subjectToAdd = await _schoolServices.UpdateSubject(id, subjectToBeUpdated);
+                return new ObjectResult(mappedSubject);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        /// <summary>
         /// Delete a subject.
         /// </summary>
         /// <param name="id">Subject's id.</param>
-        /// <returns></returns>
         [HttpDelete]
-        public async Task<IActionResult> DeleteSubject(int id )
+        public async Task<IActionResult> DeleteSubject(int id)
         {
             var subjectToDelete = await _schoolServices.DeleteSubject(id);
-            if(subjectToDelete is null)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            return subjectToDelete is null ? NotFound() : NoContent(); 
         }
     }
 }
+

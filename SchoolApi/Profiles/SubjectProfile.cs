@@ -6,7 +6,7 @@ namespace SchoolApi.Profiles
     {
         public SubjectProfile()
         {
-            CreateMap<Models.Subjects, ViewModels.SubjectViewModel>();
+            CreateMap<Models.Subjects, ViewModels.CreateOrUpdateSubjectViewModel>();
             CreateMap<ViewModels.CreateOrUpdateSubjectViewModel, Models.Subjects>();
         }
     }
