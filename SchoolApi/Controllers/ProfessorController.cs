@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SchoolApi.Models;
 using SchoolApi.Services;
@@ -22,7 +23,6 @@ namespace SchoolApi.Controllers
         /// Get a professor by id.
         /// </summary>
         /// <param name="id">Professor's id.</param>
-        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetProfessorById(int id)
         {
@@ -42,7 +42,6 @@ namespace SchoolApi.Controllers
         /// Add a new professor.
         /// </summary>
         /// <param name="professor"></param>
-        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddProfessor(CreateOrUpdateProfessorViewModel professor)
         {
@@ -59,7 +58,6 @@ namespace SchoolApi.Controllers
         /// </summary>
         /// <param name="id">Professor's id.</param>
         /// <param name="professor"></param>
-        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateProfessor(int id, CreateOrUpdateProfessorViewModel professor)
         {
@@ -72,20 +70,44 @@ namespace SchoolApi.Controllers
             return Ok(professorToBeUpdated);
         }
         /// <summary>
+        /// Update a field.
+        /// </summary>
+        /// <param name="id">Professor's id.</param>
+        /// <param name="patchDoc"></param>
+        /// <returns></returns>
+        [HttpPatch]
+        public async Task<IActionResult> PartiallyUpdateProfessor(int id,
+            JsonPatchDocument<CreateOrUpdateProfessorViewModel> patchDoc)
+        {
+            if (patchDoc != null)
+            {
+                var profToUpdate = await _schoolServices.GetProfessorById(id);
+                var newProf = _mapper.Map<CreateOrUpdateProfessorViewModel>(profToUpdate);
+
+                patchDoc.ApplyTo(newProf, ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var professorToBeUpdated = _mapper.Map<Professor>(newProf);
+                var profToAdd = await _schoolServices.UpdateProfessor(id, professorToBeUpdated);
+                return new ObjectResult(newProf);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+        /// <summary>
         /// Delete a professor.
         /// </summary>
         /// <param name="id">Professor's id</param>
-        /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteProfessor(int id)
         {
             var professorToBeDeleted = await _schoolServices.DeleteProfessor(id);
-            if (professorToBeDeleted is null)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            return professorToBeDeleted is null ? NotFound() : NoContent();
         }
-
     }
 }

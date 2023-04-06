@@ -6,7 +6,7 @@ namespace SchoolApi.Profiles
     {
       public StudentProfile()
         {
-            CreateMap<Models.Student,ViewModels.StudentViewModel>();
+            CreateMap<Models.Student,ViewModels.CreateOrUpdateStudentViewModel>();
             CreateMap<ViewModels.CreateOrUpdateStudentViewModel, Models.Student>();         
         }
     }

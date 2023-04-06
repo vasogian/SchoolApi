@@ -4,16 +4,21 @@ using SchoolApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using JsonPatchSample;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+});
 builder.Services.AddControllersWithViews()
     .AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setupAction =>
@@ -24,12 +29,7 @@ builder.Services.AddSwaggerGen(setupAction =>
 });
 builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 builder.Services.AddScoped <SchoolServices>();
-
 var app = builder.Build();
-
-
-
-// Configure the HTTP request pipeline.
 
 if (app.Environment.IsDevelopment())
 {
