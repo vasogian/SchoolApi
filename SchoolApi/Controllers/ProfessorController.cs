@@ -67,7 +67,8 @@ namespace SchoolApi.Controllers
                 return NotFound();
             }
             await this._schoolServices.UpdateProfessor(id, professorToBeUpdated);
-            return Ok(professorToBeUpdated);
+            var mappedProfessor = _mapper.Map<CreateOrUpdateProfessorViewModel>(professorToBeUpdated);
+            return Ok(mappedProfessor);
         }
         /// <summary>
         /// Update a field.

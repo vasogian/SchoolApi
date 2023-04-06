@@ -33,7 +33,8 @@ namespace SchoolApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<StudentViewModel>>(getStudents));
+            var selectedStudents = _mapper.Map<IEnumerable<StudentViewModel>>(getStudents);
+            return Ok(selectedStudents);
         }
 
         /// <summary>
@@ -87,7 +88,8 @@ namespace SchoolApi.Controllers
                 return NotFound();
             }
             await this._schoolServices.UpdateStudent(id, studentToUpdate);
-            return Ok(studentToUpdate);
+            var mappedStudent = _mapper.Map<CreateOrUpdateStudentViewModel>(studentToUpdate);
+            return Ok(mappedStudent);
         }
         /// <summary>
         /// Update a  field 

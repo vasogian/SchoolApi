@@ -68,7 +68,8 @@ namespace SchoolApi.Controllers
                 return NotFound();
             }
             await this._schoolServices.UpdateSubject(id, subjectToUpdate);
-            return Ok(subjectToUpdate);
+            var mappedSubject = _mapper.Map<CreateOrUpdateSubjectViewModel>(subjectToUpdate);
+            return Ok(mappedSubject);
         }
         /// <summary>
         /// Update a field.
